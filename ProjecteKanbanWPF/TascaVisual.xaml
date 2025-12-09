@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="ProjecteKanbanWPF.TascaVisual"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Margin="0,5,0,5"
+             MaxHeight="150" 
+             MouseMove="Tasca_MouseMove">
+
+    <UserControl.Resources>
+        <Style x:Key="EditButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#B0B0B0"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="1.5"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#F0F0F0"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#909090"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Border Background="White" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="5" Padding="0">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="5" ShadowDepth="2" Direction="270" Opacity="0.3"/>
+        </Border.Effect>
+
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,5">
+                <TextBlock x:Name="txtTitol" 
+                           Text="{Binding TascaData.Nom}" 
+                           FontWeight="Bold" 
+                           FontSize="14" 
+                           TextWrapping="Wrap"
+                           MaxHeight="42"
+                           TextTrimming="CharacterEllipsis" 
+                           ToolTip="{Binding TascaData.Nom}"/>
+            </StackPanel>
+
+            <TextBlock x:Name="txtPrioritat" 
+                       Grid.Row="1" 
+                       Grid.Column="0"
+                       Text="{Binding TascaData.Prioritat, StringFormat=Prioritat: {0}}" 
+                       Foreground="Red" 
+                       FontSize="11" 
+                       VerticalAlignment="Bottom"/>
+
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock x:Name="txtData" 
+                           Text="{Binding TascaData.DataInici, StringFormat=\{0:dd/MM/yyyy\}}" 
+                           FontSize="10" 
+                           Foreground="Gray" 
+                           VerticalAlignment="Bottom"
+                           Margin="0,0,5,0"/>
+
+                <Button Style="{StaticResource EditButtonStyle}" Click="EditarTasca_Click" Width="22" Height="22" VerticalAlignment="Bottom">
+                    <TextBlock Text="&#x270F;" FontSize="10" Margin="0,0,0,0"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>
