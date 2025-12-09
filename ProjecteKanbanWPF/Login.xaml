@@ -1,0 +1,48 @@
+﻿<Window x:Class="ProjecteKanbanWPF.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProjecteKanbanWPF"
+        mc:Ignorable="d"
+        Title="Login" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Width="350">
+            <TextBlock Text="Login"
+            FontSize="28"
+            FontWeight="Bold"
+            Margin="0 50 0 25"/>
+
+            <TextBlock Text="Nom" FontSize="18" Margin="4 0 0 10"/>
+            <TextBox Text="{Binding Nom}" Margin=" 0 0 0 10"/>
+
+            <TextBlock Text="Contrasenya" FontSize="18" Margin="4 0 0 10"/>
+
+            <PasswordBox/>
+
+            <TextBlock Text=" Has oblidat la contrasenya?" HorizontalAlignment="Left" FontSize="10" Margin="4 5 0 10" MouseDown="TextBlock_MouseDown" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" />
+            <StackPanel>
+                <Button Grid.Row="1"
+            Width="120"
+            Height="40"
+            HorizontalAlignment="Left"
+            Margin="0 10 0 0"
+            Content="Login"
+            FontSize="18"
+            Background="#4CAF50"/>
+                <Button Grid.Row="1"
+            Width="120"
+            Height="40"
+            HorizontalAlignment="Left"
+            Margin="0 10 0 0"
+            Content="Register"
+            FontSize="18"
+            Background="#4CAF50"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
