@@ -40,7 +40,6 @@ namespace ProjecteKanbanWPF
 
             this.DialogResult = true;
             this.Afegir = true;
-            this.Close();
         }
 
         private void Eliminar_Click(object sender, RoutedEventArgs e)
@@ -52,8 +51,6 @@ namespace ProjecteKanbanWPF
             {
                 mw.EliminarTasca(TascaOriginal);
             }
-
-            this.Close();
         }
     }
 }
