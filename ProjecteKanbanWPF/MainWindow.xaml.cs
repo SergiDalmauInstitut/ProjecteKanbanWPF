@@ -9,7 +9,7 @@ namespace ProjecteKanbanWPF
     public partial class MainWindow : Window
     {
         private Projecte proj;
-        public MainWindow()
+        public MainWindow(Projecte projecteSeleccionat)
         {
             InitializeComponent();
             proj = new Projecte { Name = "Test" };

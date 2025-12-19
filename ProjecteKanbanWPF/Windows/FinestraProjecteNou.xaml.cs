@@ -1,18 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProjecteKanbanWPF.Objects;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ProjecteKanbanWPF.Windows
 {
@@ -21,19 +8,19 @@ namespace ProjecteKanbanWPF.Windows
     /// </summary>
     public partial class FinestraProjecteNou : Window
     {
-
-
-        private void Acceptar_Click (object sender, RoutedEventArgs e)
+        public Projecte ProjecteFinal { get; private set; } = new Projecte();
+        public FinestraProjecteNou()
         {
-            //crear el nou projecte
-            this.Close();
+            InitializeComponent();
+            DataContext = ProjecteFinal;
         }
-        /*
-         * Fer el boto de Cancelar
+        private void Acceptar_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+        }
         private void Cancelar_Click(object sender, RoutedEventArgs e)
         {
-            //Cancelar
-            this.Close();
-        }*/
+            Close();
+        }
     }
 }

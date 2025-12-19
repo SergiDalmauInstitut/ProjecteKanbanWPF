@@ -10,6 +10,7 @@ namespace ProjecteKanbanWPF.ApiClient
     internal class UsersApiClient
     {
         private readonly string BaseUri;
+        private static readonly HttpClient _httpClient = new();
 
         public UsersApiClient()
         {
@@ -25,7 +26,7 @@ namespace ProjecteKanbanWPF.ApiClient
         {
             Usuari? user = new();
 
-            using (var client = new HttpClient())
+            using (var client = _httpClient)
             {
                 client.BaseAddress = new Uri(BaseUri);
                 client.DefaultRequestHeaders.Accept.Clear();
@@ -51,7 +52,7 @@ namespace ProjecteKanbanWPF.ApiClient
 
         public async Task AddAsync(Usuari user)
         {
-            using var client = new HttpClient();
+            using var client = _httpClient;
 
             client.BaseAddress = new Uri(BaseUri);
             client.DefaultRequestHeaders.Accept.Clear();

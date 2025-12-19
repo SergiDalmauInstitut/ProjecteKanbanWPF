@@ -36,6 +36,7 @@ namespace ProjecteKanbanWPF.Windows
                 return;
             }
 
+            MessageBox.Show(TascaResultat.Nom);
             this.DialogResult = true;
             this.Afegir = true;
         }

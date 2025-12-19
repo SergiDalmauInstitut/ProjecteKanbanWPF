@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProjecteKanbanWPF.Objects;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ProjecteKanbanWPF.Windows
 {
@@ -19,22 +8,28 @@ namespace ProjecteKanbanWPF.Windows
     /// </summary>
     public partial class FinestraRegistre : Window
     {
+        public Usuari UsuariFinal { get; private set; }
+
         public FinestraRegistre()
         {
+            UsuariFinal = new();
+            DataContext = UsuariFinal;
             InitializeComponent();
         }
 
         private void Acceptar_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            Aqui si vols pots fer un if amb un messageBox dintre per dir que s'ha guardat el usuari correctament
-            If ("Funciona"){
-            MessageBox.Show("S'ha registrat l'usuari");
+            if (string.IsNullOrEmpty(NameBox.Text) || string.IsNullOrEmpty(MailBox.Text)
+                || string.IsNullOrEmpty(LastNameBox.Text)
+                || string.IsNullOrEmpty(PasswordBox.Password)
+                || string.IsNullOrEmpty(RoleBox.Text))
+            {
+                MessageBox.Show("Emplena les dades");
+                return;
             }
-            else{
-            MessageBox.Show("Falten dades per completar");
-            */
-            this.Close();
+
+            UsuariFinal.Password = PasswordBox.Password;
+            DialogResult = true;
         }
 
         private void Cancelar_Click(object sender, RoutedEventArgs e)

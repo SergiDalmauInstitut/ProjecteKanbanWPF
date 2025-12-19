@@ -1,51 +1,72 @@
-﻿using System.Collections.ObjectModel;
+﻿using ProjecteKanbanWPF.ApiClient;
+using ProjecteKanbanWPF.Objects;
+using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace ProjecteKanbanWPF.Windows
 {
-    /// <summary>
-    /// Lógica de interacción para FinestraProjectes.xaml
-    /// </summary>
     public partial class FinestraProjectes : Window
     {
-        public class Projecte
-        {
-            public string? Titol { get; set; }
-            public string? Descripcio { get; set; }
-        }
-        public ObservableCollection<Projecte> Projectes { get; set; }
+        Usuari usuariIniciat;
+        readonly ProjectsApiClient projectsApi;
+        public ObservableCollection<Projecte> Projectes { get; set; } = [];
 
-        public FinestraProjectes()
+        public FinestraProjectes(Usuari user)
         {
             InitializeComponent();
+            usuariIniciat = user;
+            projectsApi = new();
 
-            Projectes =
-            [
-                new() { Titol="Projecte 1", Descripcio="Descripcio del projecte 1"}
-            ];
+            GetProjectesAsync(usuariIniciat);
+
             DataContext = this;
         }
-        private void EntrarProjecte_Click(object sender, RoutedEventArgs e)
-        {
-            Button btn = (Button)sender;
-            Projecte projecte = (Projecte)btn.DataContext;
 
-            if (projecte != null)
+        private async void GetProjectesAsync(Usuari user)
+        {
+            List<Projecte>? projectes = null;
+            try
             {
-                MainWindow mw = new();
-                mw.Show();
-                this.Close();
+                projectes = await projectsApi.GetProjectsFromUserId(user.Id);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            if (projectes != null)
+            {
+                foreach (var p in projectes)
+                {
+                    Projectes.Add(p);
+                }
             }
         }
+        public void AfegirProjecte(Projecte projecte)
+        {
+            Projectes.Add(projecte);
+        }
+
+        public void EliminarProjecte(ProjecteVisual projecteVisual)
+        {
+            Projectes.Remove(projecteVisual.ProjecteData);
+        }
+        public void EntrarProjecte(Projecte projecte)
+        {
+            MainWindow mw = new(projecte);
+            mw.Show();
+            Close();
+        }
+
         private void NouProjecte_Click(object sender, RoutedEventArgs e)
         {
-            // es pot millorar
-            Projectes.Add(new Projecte { Titol = "Projecte nou", Descripcio = "Descripcio del projecte nou" });
-        }
-        private void EliminarProjecte_Click(object sender, RoutedEventArgs e)
-        {
+            FinestraProjecteNou fn = new();
+            bool? result = fn.ShowDialog();
 
+            if (result == true)
+            {
+                
+            }
         }
     }
 }

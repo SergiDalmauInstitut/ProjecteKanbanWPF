@@ -18,7 +18,7 @@
             Margin="0 50 0 25"/>
 
             <TextBlock Text="Nom" FontSize="18" Margin="4 0 0 10"/>
-            <TextBox x:Name="txtBox" Text="{Binding Nom}" Margin=" 0 0 0 10"/>
+            <TextBox x:Name="txtBox" Margin=" 0 0 0 10"/>
 
             <TextBlock Text="Contrasenya" FontSize="18" Margin="4 0 0 10"/>
             <PasswordBox x:Name="PasswordBox" Margin="0 0 0 5"/>

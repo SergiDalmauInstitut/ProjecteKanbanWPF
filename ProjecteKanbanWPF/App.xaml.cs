@@ -20,6 +20,8 @@ namespace ProjecteKanbanWPF
             {
             MainWindow.Show();
             }
+
+            this.ShutdownMode = ShutdownMode.OnLastWindowClose;
         }
     }
 }

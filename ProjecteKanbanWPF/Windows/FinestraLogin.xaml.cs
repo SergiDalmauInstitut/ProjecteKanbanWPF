@@ -52,12 +52,12 @@ namespace ProjecteKanbanWPF.Windows
             }
 
             LoginBtn.IsEnabled = false;
-
-            if (await ValidateUser(nom, contrasenya))
+            Usuari? user = await ValidateUser(nom, contrasenya);
+            if (user != null)
             {
-                FinestraProjectes finestraProjectes = new();
+                FinestraProjectes finestraProjectes = new(user);
                 finestraProjectes.Show();
-                this.Close();
+                Close();
             }
             else
             {
@@ -65,7 +65,7 @@ namespace ProjecteKanbanWPF.Windows
             }
             LoginBtn.IsEnabled = true;
         }
-        private async Task<bool> ValidateUser(string nom, string contrasenya)
+        private async Task<Usuari?> ValidateUser(string nom, string contrasenya)
         {
             Usuari? result = null;
             LoginDTO login = new()
@@ -81,36 +81,30 @@ namespace ProjecteKanbanWPF.Windows
             {
                 MessageBox.Show(ex.Message);
             }
-            return result != null;
+            return result;
         }
-        private /*async*/ void Register_Click(object sender, RoutedEventArgs e)
+        private async void Register_Click(object sender, RoutedEventArgs e)
         {
-            string nom = txtBox.Text;
-            string contrasenya = PasswordBox.Password;
-
-            FinestraRegistre fr = new();
-            fr.Show();
-
-            // Si pots posa aqui el showdialog, merci, el codi de sota ja el poso jo a la nova finestra
-
-            /*
-            if (string.IsNullOrEmpty(nom) || string.IsNullOrEmpty(contrasenya))
-            {
-                MessageBox.Show("Emplena les dades");
-                return;
-            }
-            Usuari usuari = new Usuari();
             RegisterBtn.IsEnabled = false;
+            FinestraRegistre fr = new();
+            bool? result = fr.ShowDialog();
 
-            try
+            if (result == true)
             {
-                await usersApi.AddAsync(usuari);
+                Usuari usuari = fr.UsuariFinal;
+                usuari.Password = HashPassword(usuari.Password);
+
+                try
+                {
+                    await usersApi.AddAsync(usuari);
+                    MessageBox.Show("Usuari registrat correctament.", "Operació correcta");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            */
+            RegisterBtn.IsEnabled = true;
         }
 
         private static string HashPassword(string pass)
