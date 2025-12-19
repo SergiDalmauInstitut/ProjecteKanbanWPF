@@ -2,13 +2,12 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace ProjecteKanbanWPF
+namespace ProjecteKanbanWPF.Windows
 {
     public partial class TascaVisual : UserControl
     {
         public static readonly DependencyProperty TascaDataProperty =
             DependencyProperty.Register("TascaData", typeof(Tasca), typeof(TascaVisual), new PropertyMetadata(null));
-
         public Tasca TascaData
         {
             get => (Tasca)GetValue(TascaDataProperty);

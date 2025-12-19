@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using ProjecteKanbanWPF.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -51,7 +52,6 @@ namespace ProjecteKanbanWPF
                 };
 
                 columnaPanel.Children.Add(titolColumna);
-
                 columnaPanel.Drop += Columna_Drop;
                 columnaPanel.DragOver += Columna_DragOver;
 

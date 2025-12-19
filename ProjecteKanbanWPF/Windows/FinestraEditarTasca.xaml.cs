@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 
-namespace ProjecteKanbanWPF
+namespace ProjecteKanbanWPF.Windows
 {
     public partial class FinestraEditarTasca : Window
     {
