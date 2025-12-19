@@ -1,4 +1,5 @@
-﻿using ProjecteKanbanWPF.Windows;
+﻿using ProjecteKanbanWPF.Objects;
+using ProjecteKanbanWPF.Windows;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,19 +12,19 @@ namespace ProjecteKanbanWPF
         public MainWindow()
         {
             InitializeComponent();
-            proj = new Projecte("Test");
-            Title = "Kanban - " + proj.getNom();
+            proj = new Projecte { Name = "Test" };
+            Title = "Kanban - " + proj.Name;
             GenerarColumnes(proj);
         }
 
         private void GenerarColumnes(Projecte proj)
         {
-            List<string> estats = proj.getEstats();
+            List<string> estats = proj.StatesList;
             for (int i = 0; i < estats.Count; i++)
             {
                 TaskGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
-                Border b = new Border
+                Border b = new()
                 {
                     BorderThickness = new Thickness(1),
                     BorderBrush = Brushes.LightGray,
@@ -32,10 +33,12 @@ namespace ProjecteKanbanWPF
                     Background = new SolidColorBrush(Color.FromRgb(240, 240, 240))
                 };
 
-                ScrollViewer s = new ScrollViewer();
-                s.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                ScrollViewer s = new()
+                {
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto
+                };
 
-                StackPanel columnaPanel = new StackPanel
+                StackPanel columnaPanel = new()
                 {
                     Margin = new Thickness(5),
                     AllowDrop = true,
@@ -77,12 +80,12 @@ namespace ProjecteKanbanWPF
 
         private void Columna_Drop(object sender, DragEventArgs e)
         {
-            TascaVisual tascaArrossegada = e.Data.GetData(typeof(TascaVisual)) as TascaVisual;
-            StackPanel panellDesti = sender as StackPanel;
+            TascaVisual tascaArrossegada = (TascaVisual)e.Data.GetData(typeof(TascaVisual));
+            StackPanel panellDesti = (StackPanel)sender;
 
             if (tascaArrossegada != null && panellDesti != null)
             {
-                Panel pareAntic = VisualTreeHelper.GetParent(tascaArrossegada) as Panel;
+                Panel pareAntic = (Panel)VisualTreeHelper.GetParent(tascaArrossegada);
                 if (pareAntic != null && pareAntic != panellDesti)
                 {
                     pareAntic.Children.Remove(tascaArrossegada);
@@ -94,7 +97,7 @@ namespace ProjecteKanbanWPF
 
         private void AfegirTascaClick(object sender, RoutedEventArgs e)
         {
-            FinestraEditarTasca f = new FinestraEditarTasca();
+            FinestraEditarTasca f = new();
             bool? result = f.ShowDialog();
 
             if (result == true)
@@ -111,21 +114,22 @@ namespace ProjecteKanbanWPF
             if (TaskGrid.Children.Count > 0 && TaskGrid.Children[0] is Border b && b.Child is ScrollViewer sv && sv.Content is StackPanel sp)
             {
                 tasca.Estat = 0;
-                TascaVisual t = new TascaVisual { TascaData = tasca };
+                TascaVisual t = new() { TascaData = tasca };
                 sp.Children.Add(t);
-                proj.afegirTasca(tasca);
+                proj.TaskList.Add(tasca);
             }
         }
 
         public void ModificarTasca(Tasca tascaOriginal, Tasca novaTasca)
         {
-            proj.modificarTasca(tascaOriginal, novaTasca);
+            proj.TaskList.Remove(tascaOriginal);
+            proj.TaskList.Add(novaTasca);
         }
 
         public void EliminarTasca(TascaVisual tasca)
         {
-            StackPanel sp = tasca.Parent as StackPanel;
-            proj.esborrarTasca(tasca.TascaData);
+            StackPanel sp = (StackPanel)tasca.Parent;
+            proj.TaskList.Remove(tasca.TascaData);
             sp.Children.Remove(tasca);
         }
     }

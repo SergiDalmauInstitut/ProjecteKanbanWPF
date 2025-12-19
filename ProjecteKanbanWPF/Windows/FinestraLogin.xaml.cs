@@ -1,25 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ProjecteKanbanWPF.ApiClient;
+using ProjecteKanbanWPF.ApiClient.ApiObjects;
+using ProjecteKanbanWPF.Objects;
+using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ProjecteKanbanWPF.Windows
 {
     public partial class FinestraLogin : Window
     {
+        readonly UsersApiClient usersApi;
         public FinestraLogin()
         {
             InitializeComponent();
             DataContext = this;
+
+            usersApi = new();
         }
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -27,25 +26,33 @@ namespace ProjecteKanbanWPF.Windows
         }
         private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
         {
-            TextBlock block = sender as TextBlock;
+            TextBlock block = (TextBlock)sender;
 
             block.Foreground = Brushes.Blue;
         }
 
         private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
         {
-            TextBlock block = sender as TextBlock;
+            TextBlock block = (TextBlock)sender;
 
             block.Foreground = Brushes.Black;
         }
-        private void Login_Click(object sender, RoutedEventArgs e)
+        private async void Login_Click(object sender, RoutedEventArgs e)
         {
-            string nom = txtBox.Text; 
+            string nom = txtBox.Text;
             string contrasenya = PasswordBox.Password;
 
-            if (ValidateUser(nom, contrasenya))
+            if (string.IsNullOrEmpty(nom) || string.IsNullOrEmpty(contrasenya))
             {
-                FinestraProjectes finestraProjectes = new FinestraProjectes();
+                MessageBox.Show("Emplena les dades");
+                return;
+            }
+
+            LoginBtn.IsEnabled = false;
+
+            if (await ValidateUser(nom, contrasenya))
+            {
+                FinestraProjectes finestraProjectes = new();
                 finestraProjectes.Show();
                 this.Close();
             }
@@ -53,16 +60,63 @@ namespace ProjecteKanbanWPF.Windows
             {
                 MessageBox.Show("Usuari o contrasenya incorrectes");
             }
+            LoginBtn.IsEnabled = true;
         }
-        private bool ValidateUser(string nom, string contrasenya)
+        private async Task<bool> ValidateUser(string nom, string contrasenya)
         {
-            // implementacio de la bdd / app 
-            return nom == "admin" && contrasenya == "admin";
+            Usuari? result = null;
+            LoginDTO login = new()
+            {
+                Mail = nom,
+                Password = HashPassword(contrasenya)
+            };
+            try
+            {
+                result = await usersApi.GetUserByLoginAsync(login);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return result != null;
         }
-        private void Register_Click(object sender, RoutedEventArgs e)
+        private /*async*/ void Register_Click(object sender, RoutedEventArgs e)
         {
-            // fer un add de les dades
-            MessageBox.Show("S'han registrat les dades");
+            string nom = txtBox.Text;
+            string contrasenya = PasswordBox.Password;
+
+            // Si pots posa aqui el showdialog, merci, el codi de sota ja el poso jo a la nova finestra
+
+            /*
+            if (string.IsNullOrEmpty(nom) || string.IsNullOrEmpty(contrasenya))
+            {
+                MessageBox.Show("Emplena les dades");
+                return;
+            }
+            Usuari usuari = new Usuari();
+            RegisterBtn.IsEnabled = false;
+
+            try
+            {
+                await usersApi.AddAsync(usuari);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            */
+        }
+
+        private static string HashPassword(string pass)
+        {
+            StringBuilder hash = new();
+
+            byte[] hashArray = SHA256.HashData(Encoding.UTF8.GetBytes(pass));
+            foreach (byte b in hashArray)
+            {
+                hash.Append(b.ToString("x2"));
+            }
+            return hash.ToString();
         }
     }
 }

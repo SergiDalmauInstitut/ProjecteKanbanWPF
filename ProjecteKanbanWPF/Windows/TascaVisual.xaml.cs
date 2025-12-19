@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using ProjecteKanbanWPF.Objects;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -30,15 +31,17 @@ namespace ProjecteKanbanWPF.Windows
 
         private void EditarTasca_Click(object sender, RoutedEventArgs e)
         {
-            FinestraEditarTasca f = new FinestraEditarTasca(this.TascaData);
+            FinestraEditarTasca f = new(this.TascaData)
+            {
+                Owner = Application.Current.MainWindow,
+                TascaOriginal = this
+            };
 
-            f.Owner = Application.Current.MainWindow;
-            f.TascaOriginal = this;
             bool? result = f.ShowDialog();
 
             if (result == true && f.Afegir)
             {
-                MainWindow mw = f.Owner as MainWindow;
+                MainWindow mw = (MainWindow)f.Owner;
                 mw.ModificarTasca(f.TascaOriginal.TascaData, f.TascaResultat);
             }
         }

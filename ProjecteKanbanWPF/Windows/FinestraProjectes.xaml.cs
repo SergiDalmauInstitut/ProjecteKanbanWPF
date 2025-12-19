@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ProjecteKanbanWPF.Windows
 {
@@ -22,8 +11,8 @@ namespace ProjecteKanbanWPF.Windows
     {
         public class Projecte
         {
-            public string Titol { get; set; }
-            public string Descripcio { get; set; }
+            public string? Titol { get; set; }
+            public string? Descripcio { get; set; }
         }
         public ObservableCollection<Projecte> Projectes { get; set; }
 
@@ -31,20 +20,20 @@ namespace ProjecteKanbanWPF.Windows
         {
             InitializeComponent();
 
-            Projectes = new ObservableCollection<Projecte>
-            {
-                new Projecte { Titol="Projecte 1", Descripcio="Descripcio del projecte 1"}
-            };
+            Projectes =
+            [
+                new() { Titol="Projecte 1", Descripcio="Descripcio del projecte 1"}
+            ];
             DataContext = this;
         }
         private void EntrarProjecte_Click(object sender, RoutedEventArgs e)
         {
-            Button btn = sender as Button;
-            Projecte projecte = btn.DataContext as Projecte;
+            Button btn = (Button)sender;
+            Projecte projecte = (Projecte)btn.DataContext;
 
-            if (projecte != null )
+            if (projecte != null)
             {
-                MainWindow mw = new MainWindow();
+                MainWindow mw = new();
                 mw.Show();
                 this.Close();
             }
@@ -52,7 +41,7 @@ namespace ProjecteKanbanWPF.Windows
         private void NouProjecte_Click(object sender, RoutedEventArgs e)
         {
             // es pot millorar
-            Projectes.Add(new Projecte { Titol = "Projecte nou", Descripcio = "Descripcio del projecte nou"});
+            Projectes.Add(new Projecte { Titol = "Projecte nou", Descripcio = "Descripcio del projecte nou" });
         }
     }
 }

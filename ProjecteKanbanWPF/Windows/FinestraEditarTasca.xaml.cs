@@ -1,6 +1,4 @@
-﻿using ProjecteKanbanWPF;
-using System;
-using System.Diagnostics;
+﻿using ProjecteKanbanWPF.Objects;
 using System.Windows;
 
 namespace ProjecteKanbanWPF.Windows
@@ -10,13 +8,13 @@ namespace ProjecteKanbanWPF.Windows
         public Tasca TascaResultat { get; private set; }
         public bool Afegir { get; private set; }
 
-        public TascaVisual TascaOriginal { get; set; }
+        public TascaVisual? TascaOriginal { get; set; }
 
         public FinestraEditarTasca()
         {
             InitializeComponent();
 
-            TascaResultat = new Tasca(0, "Nova Tasca");
+            TascaResultat = new Tasca { Id = 0, Nom = "Nova tasca" };
             this.DataContext = TascaResultat;
             this.Title = "Crear Nova Tasca";
         }

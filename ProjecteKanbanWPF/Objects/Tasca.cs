@@ -1,27 +1,18 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace ProjecteKanbanWPF
+namespace ProjecteKanbanWPF.Objects
 {
     public class Tasca : INotifyPropertyChanged
     {
         private int _id;
-        private string _nom;
-        private string _descripcio;
-        private string _etiquetes;
+        private string _nom = "Nova tasca";
+        private string _descripcio = "Sense descripció.";
+        private string _etiquetes = string.Empty;
         private DateTime? _dataInici;
         private DateTime? _dataFi;
-        private string _prioritat;
+        private string _prioritat = "Baixa";
         private int _estat;
-
-        public Tasca(int estat, string nom = "Nova Tasca", string prioritat = "Baixa")
-        {
-            _nom = nom;
-            _prioritat = prioritat;
-            _dataInici = DateTime.Today;
-            _estat = estat;
-        }
 
         public string Nom
         {
@@ -127,9 +118,9 @@ namespace ProjecteKanbanWPF
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        protected void OnPropertyChanged([CallerMemberName] string? name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }

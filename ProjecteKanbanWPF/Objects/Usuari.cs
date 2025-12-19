@@ -1,19 +1,13 @@
-﻿using ProjecteKanbanWPF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ProjecteKanbanWPF
+﻿namespace ProjecteKanbanWPF.Objects
 {
     internal class Usuari
     {
-        private int _id;
-        private string _nom;
-        private string _cognom1;
-        private string _cognom2;
-        private string _correu;
-        private List<Projecte> _projectes;
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public string LastName { get; set; } = "";
+        public DateTime Birthday { get; set; }
+        public string Role { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

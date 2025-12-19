@@ -1,49 +1,14 @@
-﻿using ProjecteKanbanWPF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ProjecteKanbanWPF
+﻿namespace ProjecteKanbanWPF.Objects
 {
     internal class Projecte
     {
-        private int _id;
-        private string _nom;
-        private List<Tasca> _tasques;
-        private List<Usuari> _usuaris;
-        private List<string> _estats;
-
-
-        public Projecte(string nom)
-        {
-            _nom = nom;
-            _tasques = new List<Tasca>();
-            _estats = new List<string> { "Per començar", "En curs", "Finalitzat" };
-        }
-
-        public void afegirTasca(Tasca tasca)
-        {
-            _tasques.Add(tasca);
-        }
-
-        public void modificarTasca(Tasca tascaOriginal, Tasca novaTasca)
-        {
-            _tasques.Remove(tascaOriginal);
-            _tasques.Add(novaTasca);
-        }
-
-        public List<string> getEstats()
-        {
-            return _estats;
-        }
-
-        public string getNom() {  return _nom; }
-
-        public void esborrarTasca(Tasca tasca)
-        {
-            _tasques.Remove(tasca);
-        }
+        public long Id { get; set; }
+        public long IdOwner { get; set; }
+        public string Name { get; set; } = "Nou projecte";
+        public DateTime LastUpdate { get; set; } = DateTime.Now;
+        public DateTime CreationDate { get; set; } = DateTime.Now;
+        public List<string> StatesList { get; set; } = [ "To do", "Doing", "Revising", "Done" ];
+        public List<Usuari> UsersList { get; set; } = [];
+        public List<Tasca> TaskList { get; set; } = [];
     }
 }
