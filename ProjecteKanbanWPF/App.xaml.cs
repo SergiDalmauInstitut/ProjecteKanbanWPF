@@ -18,7 +18,7 @@ namespace ProjecteKanbanWPF
 
             if (resultat == true) 
             {
-                MainWindow.Show();
+            MainWindow.Show();
             }
         }
     }

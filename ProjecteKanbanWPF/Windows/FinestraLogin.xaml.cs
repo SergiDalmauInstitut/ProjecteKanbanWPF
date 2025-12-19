@@ -23,6 +23,9 @@ namespace ProjecteKanbanWPF.Windows
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
             MessageBox.Show("falta fer implementació");
+
+            FinestraCanviContrasenya fcc = new();
+            fcc.Show();
         }
         private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -84,6 +87,9 @@ namespace ProjecteKanbanWPF.Windows
         {
             string nom = txtBox.Text;
             string contrasenya = PasswordBox.Password;
+
+            FinestraRegistre fr = new();
+            fr.Show();
 
             // Si pots posa aqui el showdialog, merci, el codi de sota ja el poso jo a la nova finestra
 

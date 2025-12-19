@@ -43,5 +43,9 @@ namespace ProjecteKanbanWPF.Windows
             // es pot millorar
             Projectes.Add(new Projecte { Titol = "Projecte nou", Descripcio = "Descripcio del projecte nou" });
         }
+        private void EliminarProjecte_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
