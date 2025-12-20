@@ -18,7 +18,7 @@
                     <TextBlock Text="Projectes" FontSize="28" FontWeight="Bold"/>
                     <TextBlock Text="Tots els projectes" FontSize="14"/>
                 </StackPanel>
-                <Button Content="Nou Projecte" Width="120" Height="35" HorizontalAlignment="Right" Margin=" 300 0 0 0 " Click="NouProjecte_Click"/>
+                <Button Name="NewProjectBtn" Content="Nou Projecte" Width="120" Height="35" HorizontalAlignment="Right" Margin=" 300 0 0 0 " Click="NouProjecte_Click"/>
             </StackPanel>
 
             <ItemsControl x:Name="ProjectesList" ItemsSource="{Binding Projectes}">

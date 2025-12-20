@@ -5,107 +5,95 @@ namespace ProjecteKanbanWPF.Objects
 {
     public class Tasca : INotifyPropertyChanged
     {
-        private int _id;
-        private string _nom = "Nova tasca";
-        private string _descripcio = "Sense descripció.";
-        private string _etiquetes = string.Empty;
-        private DateTime? _dataInici;
-        private DateTime? _dataFi;
-        private string _prioritat = "Baixa";
-        private int _estat;
+        private long _id;
+        private string _name = "Nova tasca";
+        private string _description = "Sense descripció.";
+        private DateTime _startDate = DateTime.Now;
+        private DateTime? _endDate;
+        private string _priority = "Baixa";
+        private long _idProject;
+        private long _idResponsible;
+        private long _state;
 
-        public string Nom
+        public string Name
         {
-            get => _nom;
+            get => _name;
             set
             {
-                if (_nom != value)
+                if (_name != value)
                 {
-                    _nom = value;
+                    _name = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public string Descripcio
+        public string Description
         {
-            get => _descripcio;
+            get => _description;
             set
             {
-                if (_descripcio != value)
+                if (_description != value)
                 {
-                    _descripcio = value;
+                    _description = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public string Etiquetes
+        public DateTime StartDate
         {
-            get => _etiquetes;
+            get => _startDate;
             set
             {
-                if (_etiquetes != value)
+                if (_startDate != value)
                 {
-                    _etiquetes = value;
+                    _startDate = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public DateTime? DataInici
+        public DateTime? EndDate
         {
-            get => _dataInici;
+            get => _endDate;
             set
             {
-                if (_dataInici != value)
+                if (_endDate != value)
                 {
-                    _dataInici = value;
+                    _endDate = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public DateTime? DataFi
+        public string Priority
         {
-            get => _dataFi;
+            get => _priority;
             set
             {
-                if (_dataFi != value)
+                if (_priority != value)
                 {
-                    _dataFi = value;
+                    _priority = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public string Prioritat
+        public long State
         {
-            get => _prioritat;
+            get => _state;
             set
             {
-                if (_prioritat != value)
+                if (_state != value)
                 {
-                    _prioritat = value;
+                    _state = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public int Estat
-        {
-            get => _estat;
-            set
-            {
-                if (_estat != value)
-                {
-                    _estat = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public int Id
+        public long Id
         {
             get => _id;
             set
@@ -113,6 +101,32 @@ namespace ProjecteKanbanWPF.Objects
                 if (_id != value)
                 {
                     _id = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public long IdProject
+        {
+            get => _idProject;
+            set
+            {
+                if (_idProject != value)
+                {
+                    _idProject = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public long IdResponsible
+        {
+            get => _idResponsible;
+            set
+            {
+                if (_idResponsible != value)
+                {
+                    _idResponsible = value;
                     OnPropertyChanged();
                 }
             }

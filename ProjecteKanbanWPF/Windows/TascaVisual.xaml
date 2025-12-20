@@ -62,26 +62,26 @@
 
             <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,5">
                 <TextBlock x:Name="txtTitol" 
-                           Text="{Binding TascaData.Nom}" 
+                           Text="{Binding TascaData.Name}" 
                            FontWeight="Bold" 
                            FontSize="14" 
                            TextWrapping="Wrap"
                            MaxHeight="42"
                            TextTrimming="CharacterEllipsis" 
-                           ToolTip="{Binding TascaData.Nom}"/>
+                           ToolTip="{Binding TascaData.Name}"/>
             </StackPanel>
 
             <TextBlock x:Name="txtPrioritat" 
                        Grid.Row="1" 
                        Grid.Column="0"
-                       Text="{Binding TascaData.Prioritat, StringFormat=Prioritat: {0}}" 
+                       Text="{Binding TascaData.Priority}" 
                        Foreground="Red" 
                        FontSize="11" 
                        VerticalAlignment="Bottom"/>
 
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                 <TextBlock x:Name="txtData" 
-                           Text="{Binding TascaData.DataInici, StringFormat=\{0:dd/MM/yyyy\}}" 
+                           Text="{Binding TascaData.StartDate, StringFormat=\{0:dd/MM/yyyy\}}" 
                            FontSize="10" 
                            Foreground="Gray" 
                            VerticalAlignment="Bottom"

@@ -7,8 +7,9 @@ namespace ProjecteKanbanWPF.Windows
 {
     public partial class FinestraProjectes : Window
     {
-        Usuari usuariIniciat;
+        readonly Usuari usuariIniciat;
         readonly ProjectsApiClient projectsApi;
+        readonly TasksApiClient tasksApi;
         public ObservableCollection<Projecte> Projectes { get; set; } = [];
 
         public FinestraProjectes(Usuari user)
@@ -16,10 +17,18 @@ namespace ProjecteKanbanWPF.Windows
             InitializeComponent();
             usuariIniciat = user;
             projectsApi = new();
+            tasksApi = new();
 
-            GetProjectesAsync(usuariIniciat);
+            CarregarProjectes();
 
             DataContext = this;
+            if (!user.Role.Equals("admin", StringComparison.CurrentCultureIgnoreCase))
+                NewProjectBtn.Visibility = Visibility.Hidden;
+        }
+
+        private void CarregarProjectes()
+        {
+            GetProjectesAsync(usuariIniciat);
         }
 
         private async void GetProjectesAsync(Usuari user)
@@ -47,25 +56,41 @@ namespace ProjecteKanbanWPF.Windows
             Projectes.Add(projecte);
         }
 
-        public void EliminarProjecte(ProjecteVisual projecteVisual)
+        public async void EliminarProjecte(ProjecteVisual projecteVisual)
         {
-            Projectes.Remove(projecteVisual.ProjecteData);
+            try
+            {
+                await projectsApi.RemoveProjectAsync(projecteVisual.ProjecteData.Id);
+                Projectes.Remove(projecteVisual.ProjecteData);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         public void EntrarProjecte(Projecte projecte)
         {
-            MainWindow mw = new(projecte);
+            MainWindow mw = new(projecte, usuariIniciat);
             mw.Show();
             Close();
         }
 
-        private void NouProjecte_Click(object sender, RoutedEventArgs e)
+        private async void NouProjecte_Click(object sender, RoutedEventArgs e)
         {
-            FinestraProjecteNou fn = new();
+            FinestraProjecteNou fn = new(usuariIniciat);
             bool? result = fn.ShowDialog();
 
             if (result == true)
             {
-                
+                try
+                {
+                    await projectsApi.CreateProjectAsync(fn.ProjecteFinal);
+                    Projectes.Add(fn.ProjecteFinal);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
     }

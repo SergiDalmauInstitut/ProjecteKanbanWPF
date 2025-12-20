@@ -8,10 +8,11 @@ namespace ProjecteKanbanWPF.Windows
     /// </summary>
     public partial class FinestraProjecteNou : Window
     {
-        public Projecte ProjecteFinal { get; private set; } = new Projecte();
-        public FinestraProjecteNou()
+        public Projecte ProjecteFinal { get; private set; } = new();
+        public FinestraProjecteNou(Usuari user)
         {
             InitializeComponent();
+            ProjecteFinal.IdOwner = user.Id;
             DataContext = ProjecteFinal;
         }
         private void Acceptar_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,5 @@
-﻿using ProjecteKanbanWPF.Objects;
+﻿using ProjecteKanbanWPF.ApiClient;
+using ProjecteKanbanWPF.Objects;
 using ProjecteKanbanWPF.Windows;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,15 +10,44 @@ namespace ProjecteKanbanWPF
     public partial class MainWindow : Window
     {
         private Projecte proj;
-        public MainWindow(Projecte projecteSeleccionat)
+        private Usuari UsuariIniciat;
+        TasksApiClient tasksApi;
+        public MainWindow(Projecte projecteSeleccionat, Usuari usuari)
         {
             InitializeComponent();
-            proj = new Projecte { Name = "Test" };
+            tasksApi = new();
+            UsuariIniciat = usuari;
+
+            proj = projecteSeleccionat;
             Title = "Kanban - " + proj.Name;
-            GenerarColumnes(proj);
+
+            GenerarColumnes();
+            GenerarTasques();
         }
 
-        private void GenerarColumnes(Projecte proj)
+        private async void GenerarTasques()
+        {
+            try
+            {
+                List<Tasca>? tasques = await tasksApi.GetTasksFromProjectId(proj.Id);
+
+                if (tasques != null)
+                {
+                    proj.TaskList = tasques;
+
+                    foreach (var t in proj.TaskList)
+                    {
+                        AfegirTasca(t);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void GenerarColumnes()
         {
             List<string> estats = proj.StatesList;
             for (int i = 0; i < estats.Count; i++)
@@ -78,6 +108,18 @@ namespace ProjecteKanbanWPF
             e.Handled = true;
         }
 
+        private async void ModificarTasca(Tasca tasca)
+        {
+            try
+            {
+                await tasksApi.EditTaskAsync(tasca.IdProject, tasca);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void Columna_Drop(object sender, DragEventArgs e)
         {
             TascaVisual tascaArrossegada = (TascaVisual)e.Data.GetData(typeof(TascaVisual));
@@ -90,33 +132,40 @@ namespace ProjecteKanbanWPF
                 {
                     pareAntic.Children.Remove(tascaArrossegada);
                     panellDesti.Children.Add(tascaArrossegada);
-                    tascaArrossegada.TascaData.Estat = Convert.ToInt32(panellDesti.Tag);
+                    tascaArrossegada.TascaData.State = Convert.ToInt32(panellDesti.Tag);
+                    ModificarTasca(tascaArrossegada.TascaData);
                 }
             }
         }
 
-        private void AfegirTascaClick(object sender, RoutedEventArgs e)
+        private async void AfegirTascaClick(object sender, RoutedEventArgs e)
         {
-            FinestraEditarTasca f = new();
+            FinestraEditarTasca f = new(proj, UsuariIniciat);
             bool? result = f.ShowDialog();
 
             if (result == true)
             {
                 if (f.Afegir)
                 {
-                    AfegirTasca(f.TascaResultat);
+                    try
+                    {
+                        await tasksApi.AddTaskToProjectAsync(f.TascaResultat);
+                        AfegirTasca(f.TascaResultat);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
             }
         }
 
         public void AfegirTasca(Tasca tasca)
         {
-            if (TaskGrid.Children.Count > 0 && TaskGrid.Children[0] is Border b && b.Child is ScrollViewer sv && sv.Content is StackPanel sp)
+            if (TaskGrid.Children.Count > 0 && TaskGrid.Children[(int)tasca.State] is Border b && b.Child is ScrollViewer sv && sv.Content is StackPanel sp)
             {
-                tasca.Estat = 0;
                 TascaVisual t = new() { TascaData = tasca };
                 sp.Children.Add(t);
-                proj.TaskList.Add(tasca);
             }
         }
 
@@ -124,13 +173,15 @@ namespace ProjecteKanbanWPF
         {
             proj.TaskList.Remove(tascaOriginal);
             proj.TaskList.Add(novaTasca);
+            ModificarTasca(novaTasca);
         }
 
-        public void EliminarTasca(TascaVisual tasca)
+        public async void EliminarTasca(TascaVisual tasca)
         {
             StackPanel sp = (StackPanel)tasca.Parent;
             proj.TaskList.Remove(tasca.TascaData);
             sp.Children.Remove(tasca);
+            await tasksApi.RemoveTaskAsync(tasca.TascaData.Id);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace ProjecteKanbanWPF.Windows
         {
             if (Window.GetWindow(this) is FinestraProjectes fp)
             {
-                fp.EntrarProjecte(this.ProjecteData);
+                fp.EntrarProjecte(ProjecteData);
             }
         }
 
