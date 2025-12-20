@@ -14,11 +14,12 @@ namespace ProjecteKanbanWPF.Windows
             get => (Tasca)GetValue(TascaDataProperty);
             set => SetValue(TascaDataProperty, value);
         }
-
-        public TascaVisual()
+        readonly Projecte proj;
+        public TascaVisual(Projecte projecte)
         {
             InitializeComponent();
-            this.DataContext = this;
+            proj = projecte;
+            DataContext = this;
         }
 
         private void Tasca_MouseMove(object sender, MouseEventArgs e)
@@ -31,7 +32,7 @@ namespace ProjecteKanbanWPF.Windows
 
         private void EditarTasca_Click(object sender, RoutedEventArgs e)
         {
-            FinestraEditarTasca f = new(this.TascaData)
+            FinestraEditarTasca f = new(TascaData, proj)
             {
                 Owner = Application.Current.MainWindow,
                 TascaOriginal = this

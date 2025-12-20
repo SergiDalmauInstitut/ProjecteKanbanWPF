@@ -1,4 +1,5 @@
 ﻿using ProjecteKanbanWPF.Objects;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -8,15 +9,22 @@ namespace ProjecteKanbanWPF.ApiClient
 {
     internal class ProjectsApiClient
     {
-        private readonly string BaseUri;
+        private static string BaseUri;
         private static readonly HttpClient _httpClient = new();
 
+        static ProjectsApiClient()
+        {
+            BaseUri = ConfigurationManager.AppSettings["BaseUri"] ?? "https://localhost:44339/api/";
+            _httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(BaseUri)
+            };
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        }
         public ProjectsApiClient()
         {
             BaseUri = ConfigurationManager.AppSettings["BaseUri"] ?? "https://localhost:44339/api/";
-            _httpClient.BaseAddress = new Uri(BaseUri);
-            _httpClient.DefaultRequestHeaders.Accept.Clear();
-            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public async Task<List<Projecte>?> GetProjectsFromUserId(long Id)
@@ -37,6 +45,26 @@ namespace ProjecteKanbanWPF.ApiClient
                 }
             }
             return projectes;
+        }
+
+        public async Task<List<Usuari>?> GetUsersFromProjectId(long Id)
+        {
+            List<Usuari>? usuaris = [];
+
+            HttpResponseMessage response = await _httpClient.GetAsync($"projects/{Id}/users");
+
+            if (response.IsSuccessStatusCode)
+            {
+                usuaris = await response.Content.ReadFromJsonAsync<List<Usuari>>();
+            }
+            else
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    usuaris.Clear();
+                }
+            }
+            return usuaris;
         }
 
         public async Task<Projecte> CreateProjectAsync(Projecte newProject)

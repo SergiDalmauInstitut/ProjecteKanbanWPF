@@ -23,13 +23,13 @@
                                Margin="0 0 0 25"/>
 
                     <TextBlock Text="Nom" FontSize="14" Margin="4 0 0 2"/>
-                    <TextBox Text="{Binding Name}"/>
+                    <TextBox Text="{Binding TascaResultat.Name}"/>
 
                     <TextBlock Text="Prioritat" FontSize="14" Margin="4 5 0 2"/>
-                    <TextBox Text="{Binding Priority}"/>
+                    <TextBox Text="{Binding TascaResultat.Priority}"/>
 
                     <TextBlock Text="Descripció" FontSize="14" Margin="4 5 0 2"/>
-                    <TextBox Text="{Binding Description}"
+                    <TextBox Text="{Binding TascaResultat.Description}"
                              Height="90"
                              AcceptsReturn="True"
                              TextWrapping="Wrap"
@@ -37,20 +37,20 @@
 
                     <TextBlock Text="Responsable" FontSize="14" Margin="4 5 0 2"/>
                     <ComboBox Height="35"
-                              ItemsSource="{Binding AvailableUsers}"
+                              ItemsSource="{Binding ProjectUsers}"
                               DisplayMemberPath="Name"
                               SelectedValuePath="Id"
-                              SelectedValue="{Binding IdResponsible}"/>
+                              SelectedValue="{Binding TascaResultat.IdResponsible}"/>
 
                     <TextBlock Text="Data Començament" FontSize="14" Margin="4 5 0 2"/>
                     <DatePicker Height="35"
-                                 SelectedDate="{Binding StartDate}"
+                                 SelectedDate="{Binding TascaResultat.StartDate}"
                                  VerticalContentAlignment="Center"
                                  FontSize="14"/>
 
                     <TextBlock Text="Data Finalització" FontSize="14" Margin="4 5 0 2"/>
                     <DatePicker Height="35"
-                                 SelectedDate="{Binding EndDate}"
+                                 SelectedDate="{Binding TascaResultat.EndDate}"
                                  VerticalContentAlignment="Center"
                                  FontSize="14"/>
                 </StackPanel>

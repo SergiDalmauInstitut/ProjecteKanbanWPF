@@ -9,23 +9,26 @@ namespace ProjecteKanbanWPF.Windows
         public bool Afegir { get; private set; } = false;
 
         public TascaVisual? TascaOriginal { get; set; }
-
+        public List<Usuari> ProjectUsers { get; set; }
         public FinestraEditarTasca(Projecte proj, Usuari user)
         {
             InitializeComponent();
 
             TascaResultat = new Tasca { Id = 0, Name = "Nova tasca", IdProject = proj.Id, IdResponsible = user.Id };
-            DataContext = TascaResultat;
+            DataContext = this;
             Title = "Crear Nova Tasca";
+            ProjectUsers = proj.UsersList;
         }
 
-        public FinestraEditarTasca(Tasca tascaExistents)
+        public FinestraEditarTasca(Tasca tascaExistents, Projecte proj)
         {
             InitializeComponent();
 
             TascaResultat = tascaExistents;
-            DataContext = TascaResultat;
+            DataContext = this;
             Title = "Editar Tasca: " + tascaExistents.Name;
+
+            ProjectUsers = proj.UsersList;
         }
 
         private void Afegir_Click(object sender, RoutedEventArgs e)

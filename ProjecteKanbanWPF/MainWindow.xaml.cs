@@ -12,10 +12,12 @@ namespace ProjecteKanbanWPF
         private Projecte proj;
         private Usuari UsuariIniciat;
         TasksApiClient tasksApi;
+        ProjectsApiClient projectsApi;
         public MainWindow(Projecte projecteSeleccionat, Usuari usuari)
         {
             InitializeComponent();
             tasksApi = new();
+            projectsApi = new();
             UsuariIniciat = usuari;
 
             proj = projecteSeleccionat;
@@ -23,6 +25,24 @@ namespace ProjecteKanbanWPF
 
             GenerarColumnes();
             GenerarTasques();
+            CarregarUsuaris();
+        }
+
+        private async void CarregarUsuaris()
+        {
+            try
+            {
+                List<Usuari>? usuaris = await projectsApi.GetUsersFromProjectId(proj.Id);
+
+                if (usuaris != null && usuaris.Count != 0)
+                {
+                    proj.UsersList = usuaris;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private async void GenerarTasques()
@@ -31,7 +51,7 @@ namespace ProjecteKanbanWPF
             {
                 List<Tasca>? tasques = await tasksApi.GetTasksFromProjectId(proj.Id);
 
-                if (tasques != null)
+                if (tasques != null && tasques.Count != 0)
                 {
                     proj.TaskList = tasques;
 
@@ -164,7 +184,7 @@ namespace ProjecteKanbanWPF
         {
             if (TaskGrid.Children.Count > 0 && TaskGrid.Children[(int)tasca.State] is Border b && b.Child is ScrollViewer sv && sv.Content is StackPanel sp)
             {
-                TascaVisual t = new() { TascaData = tasca };
+                TascaVisual t = new(proj) { TascaData = tasca };
                 sp.Children.Add(t);
             }
         }
